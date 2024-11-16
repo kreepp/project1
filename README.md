@@ -1,22 +1,23 @@
-# Project 1 Files
-
-project1/
+# Project 1 Files <br />
 │
-├── music_library.py      # Handles adding and searching tracks in the library
-├── playlist_manager.py   # Manages playlists
-├── queue_manager.py      # Manages playback queue
-├── data_storage.py       # Handles data persistence to CSV
-├── main.py               # Entry point of the program
+├── music_library.py      # Handles adding and searching tracks in the library <br />
+├── playlist_manager.py   # Manages playlists <br />
+├── queue_manager.py      # Manages playback queue <br />
+├── data_storage.py       # Handles data persistence to CSV <br />
+├── main.py               # Entry point of the program <br />
 ├── storage/
-│   ├── music_library.csv # Stores tracks
-│   ├── playlists.csv     # Stores playlists
-│   └── queue.csv         # Stores playback queue
+│   ├── music_library.csv # Stores tracks <br />
+│   ├── playlists.csv     # Stores playlists <br />
+│   └── queue.csv         # Stores playback queue <br />
 
 
-other stuffs:
-music_library.csv
-    Columns: Title, Artist, Album, Duration
-playlists.csv
-    Columns: Name, Tracks (comma-separated)
-queue.csv
-    Columns: Title, Artist, Album, Duration
+# Other Stuffs:
+music_library.csv <br />
+    Columns: Title, Artist, Album, Duration <br />
+    <br />
+playlists.csv <br />
+    Columns: Name, Tracks (comma-separated) <br />
+    <br />
+queue.csv <br />
+    Columns: Title, Artist, Album, Duration <br />
+    <br />
