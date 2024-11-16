@@ -1,5 +1,5 @@
 # Project 1 Files <br />
-│
+│ <br />
 ├── music_library.py      # Handles adding and searching tracks in the library <br />
 ├── playlist_manager.py   # Manages playlists <br />
 ├── queue_manager.py      # Manages playback queue <br />
