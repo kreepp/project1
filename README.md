@@ -5,7 +5,7 @@
 ├── queue_manager.py      # Manages playback queue <br />
 ├── data_storage.py       # Handles data persistence to CSV <br />
 ├── main.py               # Entry point of the program <br />
-├── storage/
+├── storage/ <br />
 │   ├── music_library.csv # Stores tracks <br />
 │   ├── playlists.csv     # Stores playlists <br />
 │   └── queue.csv         # Stores playback queue <br />
