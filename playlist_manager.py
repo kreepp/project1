@@ -1,25 +1,8 @@
-import csv
-
 class PlaylistManager:
-    def __init__(self, library, filepath="storage/playlists.csv"):
+    def __init__(self, storage, library):
+        self.storage = storage
         self.library = library
-        self.filepath = filepath
-        self.playlists = self.load_playlists()
-
-    def load_playlists(self):
-        try:
-            with open(self.filepath, mode="r") as file:
-                reader = csv.DictReader(file)
-                return list(reader)
-        except FileNotFoundError:
-            return []
-
-    def save_playlists(self):
-        with open(self.filepath, mode="w", newline="") as file:
-            fieldnames = ["Name", "Tracks"]
-            writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(self.playlists)
+        self.playlists = self.storage.load_playlists()
 
     def add_playlist(self):
         name = input("Enter playlist name: ")
@@ -38,8 +21,8 @@ class PlaylistManager:
             else:
                 print("Track not found in library.")
 
-        self.playlists.append({"Name": name, "Tracks": tracks})
-        self.save_playlists()
+        self.playlists.append({"Name": name, "Tracks": ", ".join([track["Title"] for track in tracks])})
+        self.storage.save_playlists(self.playlists)
         print("Playlist created successfully.")
 
     def manage_playlists(self):
