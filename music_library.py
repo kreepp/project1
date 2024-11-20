@@ -1,24 +1,7 @@
-import csv
-
 class MusicLibrary:
-    def __init__(self, filepath="storage/music_library.csv"):
-        self.filepath = filepath
-        self.tracks = self.load_tracks()
-
-    def load_tracks(self):
-        try:
-            with open(self.filepath, mode="r") as file:
-                reader = csv.DictReader(file)
-                return list(reader)
-        except FileNotFoundError:
-            return []
-
-    def save_tracks(self):
-        with open(self.filepath, mode="w", newline="") as file:
-            fieldnames = ["Title", "Artist", "Album", "Duration"]
-            writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(self.tracks)
+    def __init__(self, storage):
+        self.storage = storage
+        self.tracks = self.storage.load_music_library()
 
     def add_track(self):
         title = input("Enter track title: ")
@@ -26,7 +9,7 @@ class MusicLibrary:
         album = input("Enter album: ")
         duration = input("Enter duration (mm:ss): ")
         self.tracks.append({"Title": title, "Artist": artist, "Album": album, "Duration": duration})
-        self.save_tracks()
+        self.storage.save_music_library(self.tracks)
         print("Track added successfully.")
 
     def search_track(self, title):
