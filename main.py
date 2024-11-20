@@ -1,11 +1,13 @@
 from music_library import MusicLibrary
 from playlist_manager import PlaylistManager
 from queue_manager import QueueManager
+from data_storage import DataStorage
 
 def main():
-    library = MusicLibrary()
-    playlist_manager = PlaylistManager(library)
-    queue_manager = QueueManager(library, playlist_manager)
+    storage = DataStorage()
+    library = MusicLibrary(storage)
+    playlist_manager = PlaylistManager(storage, library)
+    queue_manager = QueueManager(storage, library, playlist_manager)
 
     while True:
         print("\nMain Menu:")
