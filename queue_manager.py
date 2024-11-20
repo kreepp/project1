@@ -1,14 +1,16 @@
 class QueueManager:
-    def __init__(self, library, playlist_manager):
+    def __init__(self, storage, library, playlist_manager):
+        self.storage = storage
         self.library = library
         self.playlist_manager = playlist_manager
-        self.queue = []
+        self.queue = self.storage.load_queue()
 
     def add_to_queue(self):
         track_title = input("Enter track title to add to queue: ")
         track = self.library.search_track(track_title)
         if track:
             self.queue.append(track[0])
+            self.storage.save_queue(self.queue)
             print("Track added to queue.")
         else:
             print("Track not found.")
