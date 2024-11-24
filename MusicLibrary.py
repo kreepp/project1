@@ -1,5 +1,5 @@
-import json
 from Tracks import Tracks
+import json
 
 class MusicLibrary:
     def __init__(self):
@@ -147,19 +147,3 @@ class MusicLibrary:
         result.extend(lib[start + 1:end])
 
         return result
- 
-             
-    def searchTrack(self, trackTitle) -> int:
-        left = 0
-        right = len(self.getMusicLibrary()) - 1
-        lib = self.getMusicLibrary()
-        while left <= right:
-            mid = (left + right) // 2
-
-            if lib[mid].getTitle().strip().lower() > trackTitle.strip().lower():
-                right = mid - 1
-            elif lib[mid].getTitle().strip().lower() < trackTitle.strip().lower():
-                left = mid + 1
-            elif lib[mid].getTitle().strip().lower() == trackTitle.strip().lower():
-                return mid
-        return -1

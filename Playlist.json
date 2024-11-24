@@ -1,7 +1,7 @@
 {
     "Don": {
         "Playlist Name": "Don",
-        "Total Duration": "2 min 47 sec",
+        "Total Duration": "6 min 24 sec",
         "Tracks": [
             {
                 "Title": "As It Was",
@@ -9,6 +9,13 @@
                 "Additional Artists": [],
                 "Album": "Harry's House",
                 "Duration": "02:47"
+            },
+            {
+                "Title": "Watermelon Sugar",
+                "Artist": "Harry Styles",
+                "Additional Artists": [],
+                "Album": "Fine Line",
+                "Duration": "02:54"
             }
         ]
     }

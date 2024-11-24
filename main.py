@@ -5,22 +5,37 @@ from Tracks import Tracks
 import json
 
 
-def receiveTrackInfo() -> Tracks:
-    """Cast several prompts for user to input about the
-    Tracks data.
-
-    Returns:
-       Track: Tracks object created based from data.
+def validate_duration(duration: str) -> bool:
     """
+    Validates the track duration format as mm:ss and checks for reasonable values.
+    """
+    try:
+        minutes, seconds = map(int, duration.split(":"))
+        return 0 <= minutes and 0 <= seconds < 60
+    except:
+        return False
 
-    title = input("Enter track title: ")
-    artist = input("Enter artist: ")
-    album = input("Enter album: ")
-    duration = input("Enter duration (mm:ss): ")
-    additional_artists = input("Enter additional artist if there is any (Type and Enter None if there isn't any): ")
-    if additional_artists == None or additional_artists == "":
-        additional_artists = None
-    return Tracks(title,artist,album,duration,additional_artists)
+def receiveTrackInfo() -> Tracks:
+    """
+    Cast several prompts for user to input about the Tracks data.
+    Includes validation for duration.
+    Returns:
+       Tracks: Tracks object created based on data.
+    """
+    title = input("Enter track title: ").strip()
+    artist = input("Enter artist: ").strip()
+    album = input("Enter album: ").strip()
+
+    while True:
+        duration = input("Enter duration (mm:ss): ").strip()
+        if validate_duration(duration):
+            break
+        else:
+            print("Invalid duration format. Please use mm:ss with seconds less than 60.")
+
+    additional_artists_input = input("Enter additional artists (comma-separated, or 'None'): ").strip()
+    additional_artists = (additional_artists_input.split(",") if additional_artists_input.lower() != "none" else [])
+    return Tracks(title, artist, album, duration, additional_artists)
 
 MENUS = {
     "main": {
@@ -51,21 +66,29 @@ MENUS = {
     }
 }
 
-
 def showMenu(menu_name):
+    """
+    Displays the menu based on the provided name.
+    """
     print("\n<----- Menu ----->")
     for key, value in MENUS[menu_name].items():
         print(f"[{key}] {value}")
 
-
 def mainMenu():
+    """
+    Entry point for the program: displays the main menu.
+    """
     library = MusicLibrary()
     queue = Queue()
 
     while True:
         showMenu("main")
-        choice = int(input("Select Operation: "))
-        
+        try:
+            choice = int(input("Select Operation: "))
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+            continue
+
         if choice == 1:
             viewMusicLibrary(library)
         elif choice == 2:
@@ -82,7 +105,6 @@ def mainMenu():
         else:
             print("Invalid option. Please try again.")
 
-
 def viewMusicLibrary(library):
     print("\n<----- Music Library ----->")
     if library.isEmpty():
@@ -90,7 +112,6 @@ def viewMusicLibrary(library):
     else:
         for track in library.getMusicLibrary():
             print(track)
-
 
 def searchTrack(library):
     title = input("Enter track title to search: ")
@@ -102,12 +123,58 @@ def searchTrack(library):
         for track in results:
             print(track)
 
-
 def addTrack(library):
     track = receiveTrackInfo()
     library.insertTrackToLibrary(track)
     print("Track added successfully!")
 
+def display_playlist_details(playlist_data):
+    """
+    Displays the details of a selected playlist.
+
+    Args:
+        playlist_data (dict): Details of the playlist, including tracks, total duration, etc.
+    """
+    print(f"\nPlaylist Name: {playlist_data['Playlist Name']}")
+    print(f"Total Duration: {playlist_data['Total Duration']}")
+    print("Tracks:")
+    for track in playlist_data["Tracks"]:
+        title = track["Title"]
+        artist = track["Artist"]
+        duration = track["Duration"]
+        print(f"    {title} – {artist} ({duration})")
+    print("\n")
+
+def display_playlists_with_pagination(playlists, page=1, items_per_page=10):
+    """
+    Displays the list of playlists with pagination.
+
+    Args:
+        playlists (list[str]): List of playlist names.
+        page (int): Current page number.
+        items_per_page (int): Number of playlists to display per page.
+    """
+    total_playlists = len(playlists)
+    total_pages = (total_playlists + items_per_page - 1) // items_per_page  # Ceiling division
+
+    # Validate and adjust the current page
+    page = max(1, min(page, total_pages))
+
+    # Calculate the range of playlists to display
+    start_index = (page - 1) * items_per_page
+    end_index = min(start_index + items_per_page, total_playlists)
+    playlists_to_display = playlists[start_index:end_index]
+
+    print("\n<----- List of Playlists ----->")
+    for idx, playlist in enumerate(playlists_to_display, start=start_index + 1):
+        print(f"[{idx}] {playlist}")
+
+    print(f"\n<Page {page} of {total_pages}>")
+    print("[11] Previous Page")
+    print("[12] Next Page")
+    print("[0] Exit to Main Menu")
+
+    return page, total_pages  # Return current state to handle navigation
 
 def managePlaylists(library):
     while True:
@@ -124,13 +191,58 @@ def managePlaylists(library):
                 print(f"Playlist '{name}' created successfully!")
 
         elif choice == 2:
+            """
+            Handles playlist management with pagination and details display functionality.
+            """
             try:
                 with open("Playlist.json", "r") as f:
-                    data = json.load(f)
-                for name, details in data.items():
-                    print(f"Playlist: {details['Playlist Name']}\nTotal Duration: {details['Total Duration']}\n")
+                    data = json.load(f)  # Load JSON data
+                playlists = list(data.keys())  # Extract playlist names
             except FileNotFoundError:
-                print("No playlists available.")
+                print("No playlists found.")
+                return
+            except json.JSONDecodeError:
+                print("Error decoding Playlist.json file.")
+                return
+
+            page = 1
+            while True:
+                page, total_pages = display_playlists_with_pagination(playlists, page)
+
+                # Add "Search Playlist" as an option
+                print("[13] Search Playlist")
+                print("[0] Exit to Main Menu")
+
+                # Navigation and details logic
+                try:
+                    choice = int(input("Select an option: "))
+                except ValueError:
+                    print("Invalid input. Please enter a number.")
+                    continue
+
+                if choice == 0:
+                    break
+                elif choice == 11 and page > 1:  # Previous page
+                    page -= 1
+                elif choice == 12 and page < total_pages:  # Next page
+                    page += 1
+                elif choice == 13:  # Search Playlist
+                    search_query = input("Enter playlist name to search: ").strip()
+                    matching_playlists = [name for name in playlists if search_query.lower() in name.lower()]
+                    if matching_playlists:
+                        print("\nSearch Results:")
+                        for idx, playlist in enumerate(matching_playlists, start=1):
+                            print(f"[{idx}] {playlist}")
+                    else:
+                        print(f"No playlists found matching '{search_query}'.")
+                elif 1 <= choice <= len(playlists):  # Select a playlist
+                    # Get the selected playlist name
+                    selected_playlist = playlists[choice - 1]
+
+                    # Display details of the selected playlist
+                    display_playlist_details(data[selected_playlist])
+                else:
+                    print("Invalid option. Please try again.")
 
         elif choice == 3:
             name = input("Enter playlist name to delete: ")
@@ -179,7 +291,6 @@ def managePlaylists(library):
             break
         else:
             print("Invalid option. Please try again.")
-
 
 def manageQueue(queue, library):
     while True:
@@ -236,7 +347,6 @@ def manageQueue(queue, library):
 
         else:
             print("Invalid option. Please try again.")
-
 
 if __name__ == "__main__":
     mainMenu()

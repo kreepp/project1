@@ -1,6 +1,6 @@
-import random
-from Tracks import Tracks
 from Playlist import Playlist
+from Tracks import Tracks
+import random
 import json
 
 class Queue:

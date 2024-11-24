@@ -81,7 +81,10 @@
     {
         "Title": "JEllo world",
         "Artist": "Meemo",
-        "Additional Artists": ["Moon", "Cake"],
+        "Additional Artists": [
+            "Moon",
+            "Cake"
+        ],
         "Album": "The Heck",
         "Duration": "55:67"
     },

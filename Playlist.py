@@ -1,5 +1,5 @@
-import json
 from Tracks import Tracks
+import json
 
 class Playlist:
     def __init__(self, name):
