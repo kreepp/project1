@@ -40,8 +40,8 @@ def receiveTrackInfo() -> Tracks:
 MENUS = {
     "main": {
         1: "View Music Library",
-        2: "Search Track",
-        3: "Add Track",
+        2: "Search Track in Music Library",
+        3: "Add Track to Music Library",
         4: "Manage Playlists",
         5: "Manage Queue",
         6: "Exit"
@@ -115,7 +115,7 @@ def viewMusicLibrary(library):
 
 def searchTrack(library):
     title = input("Enter track title to search: ")
-    results = library.getTrack(title)
+    results = library.getTrackWithTitle(title)
     if not results:
         print(f"No tracks found for '{title}'.")
     else:
@@ -127,6 +127,7 @@ def addTrack(library):
     track = receiveTrackInfo()
     library.insertTrackToLibrary(track)
     print("Track added successfully!")
+
 
 def display_playlist_details(playlist_data):
     """

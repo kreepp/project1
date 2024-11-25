@@ -1,5 +1,12 @@
 [
     {
+        "Title": "Aaaaaaa",
+        "Artist": "taylor swift",
+        "Additional Artists": [],
+        "Album": "hello",
+        "Duration": "23:34"
+    },
+    {
         "Title": "Anti-Hero",
         "Artist": "Haylor Swift",
         "Additional Artists": [],
@@ -45,29 +52,6 @@
         "Title": "HEllo world",
         "Artist": "Meema",
         "Additional Artists": [],
-        "Album": "The Heck",
-        "Duration": "55:67"
-    },
-    {
-        "Title": "HEllo world",
-        "Artist": "Meembsaur",
-        "Additional Artists": [],
-        "Album": "The Heck",
-        "Duration": "55:67"
-    },
-    {
-        "Title": "HEllo world",
-        "Artist": "Meemo",
-        "Additional Artists": [],
-        "Album": "The Heck",
-        "Duration": "55:67"
-    },
-    {
-        "Title": "HEllo world",
-        "Artist": "Meemo",
-        "Additional Artists": [
-            "Justin TiberLakes"
-        ],
         "Album": "The Heck",
         "Duration": "55:67"
     },
@@ -133,13 +117,6 @@
     {
         "Title": "Watermelon Sugar",
         "Artist": "Harry Styles",
-        "Additional Artists": [],
-        "Album": "Fine Line",
-        "Duration": "02:54"
-    },
-    {
-        "Title": "Watermelon Sugar",
-        "Artist": "Harry Styzish",
         "Additional Artists": [],
         "Album": "Fine Line",
         "Duration": "02:54"
