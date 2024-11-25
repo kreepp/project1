@@ -10,8 +10,6 @@ class MusicLibrary:
         with open("MusicLibrary.json", "r") as f:
             data = json.loads(f.read())
 
-        # for i in range(0, len(data)):
-        #     self.getMusicLibrary().append(Tracks(data[i]["Title"],data[i]["Artist"],data[i]["Album"],data[i]["Duration"]))
         for track_data in data:
             self.getMusicLibrary().append(
                 Tracks(
@@ -40,7 +38,14 @@ class MusicLibrary:
     
     def insertTrackToLibrary(self, track: Tracks):
         index = self.findIndexInsertion(track)
-        self.getMusicLibrary().insert(index, track)
+        lib = self.getMusicLibrary()
+        title = track.getTitle()
+        albumName = track.getAlbumName()
+
+        if len(self.getTrackWithTitle(title)) >= 1:
+            if len(self.getTrackWithAlbum(albumName)) >= 1:
+                return f"Tracks Already Exist"
+        lib.insert(index, track)
 
         data = []
         for track in self.getMusicLibrary():
@@ -99,7 +104,7 @@ class MusicLibrary:
 
         return left
     
-    def getTrack(self, trackTitle) -> list['Tracks']:
+    def getTrackWithTitle(self, trackTitle) -> list['Tracks']:
         """
             Finding all tracks with title that matches with the given track title.
             Using binary search to narrow the search range and then performs a linear scan to collect all matching tracks.
@@ -147,3 +152,54 @@ class MusicLibrary:
         result.extend(lib[start + 1:end])
 
         return result
+    
+    def getTrackWithAlbum(self, albumName) -> list['Tracks']:
+        """
+            Finding all tracks with title that matches with the given track title.
+            Using binary search to narrow the search range and then performs a linear scan to collect all matching tracks.
+
+            Returns:
+                list[Tracks]: A list of tracks with the matching title.
+                to be able to handle cases where there are multiple tracks that have same track title
+        """
+        if self.isEmpty():
+            return result
+        
+        left = 0
+        right = self.getSize() - 1
+        lib = self.getMusicLibrary() 
+        result = []
+
+        while left <= right:
+            mid = (left + right) // 2
+            midTitle = lib[mid].getAlbumName().strip().lower()
+            targetTitle = albumName.strip().lower()
+
+            if midTitle > targetTitle:
+                right = mid - 1
+            elif midTitle < targetTitle:
+                left = mid + 1
+            else:
+                # Match found, now reduce the search range
+                break
+
+        # If no match is found during binary search
+        if left > right:
+            return result
+
+        # Linear scan backward to find all matching titles before mid
+        start = mid
+        while start >= 0 and lib[start].getAlbumName().strip().lower() == albumName.strip().lower():
+            start -= 1
+
+        # Linear scan forward to find all matching titles after mid
+        end = mid
+        while end < len(lib) and lib[end].getAlbumName().strip().lower() == albumName.strip().lower():
+            end += 1
+
+        # Collect all matching tracks
+        result.extend(lib[start + 1:end])
+
+        return result
+    
+
