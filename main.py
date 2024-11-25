@@ -265,7 +265,7 @@ def managePlaylists(library):
             playlist = Playlist.load_playlist(name)
             if playlist:
                 title = input("Enter track title to add: ")
-                track = library.getTrack(title)
+                track = library.getTrackWithTitle(title)
                 if track:
                     playlist.add_track(track[0])  # Add the first match
                     print("Track added to playlist!")
@@ -279,7 +279,7 @@ def managePlaylists(library):
             playlist = Playlist.load_playlist(name)
             if playlist:
                 title = input("Enter track title to remove: ")
-                track = library.getTrack(title)
+                track = library.getTrackWithTitle(title)
                 if track:
                     playlist.remove_track(track[0])
                     print("Track removed from playlist!")
@@ -300,7 +300,7 @@ def manageQueue(queue, library):
 
         if choice == 1:
             title = input("Enter track title to add: ")
-            track = library.getTrack(title)
+            track = library.getTrackWithTitle(title)
             if track:
                 queue.enqueue(track[0])
                 print("Track added to queue!")
