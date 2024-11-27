@@ -1,9 +1,9 @@
 Help
 
 problems:
-    search watermelon instead of watermelon sugar
+    search watermelon instead of watermelon sugar (ongoing fix (yajiHub))
     total duration
-    add track
+    add track (ongoing fix (YajiHub))
 
 Playlist;
     Play
